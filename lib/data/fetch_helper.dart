@@ -1,10 +1,10 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:mobile8_project3/data/consts.dart';
 
 class FetchHelper {
   Future<List<String>> fetchImages() async {
-    const fullUri =
-        "https://api.giphy.com/v1/gifs/search?api_key=Ye9mPR1IWuM6Z5CXCkxxxkTqA0xQYijZ&q=flowers&limit=20&offset=0&rating=g&lang=en";
+    const fullUri = "https://$baseUrl?api_key=$apiKey&limit=$limit";
     final uri = Uri.parse(fullUri);
 
     final response = await http.get(uri);
