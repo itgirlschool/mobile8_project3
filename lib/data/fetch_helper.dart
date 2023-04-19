@@ -13,12 +13,7 @@ class FetchHelper {
     if (response.statusCode == 200) {
       final result = jsonDecode(response.body);
 
-
-      final images = (result['data'] as List<dynamic>)
-          .map((e) => e['images']['original']['url'] as String)
-          .toList();
-
-      return images;
+      return result;
     } else {
       throw Exception('Failed to load data');
     }
