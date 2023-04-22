@@ -26,9 +26,11 @@ class _HomeState extends State<Home> {
   @override
   String _Text = "";
   String _searchText = "";
+  String er = ' ';
   final FetchHelper1 fetchHelper = FetchHelper1();
   List<String> images = [];
   String doneReqiest = 'smth';
+  bool tapped = false;
   _ChangeText(String text) {
     setState(() {
       _Text = text;
@@ -53,6 +55,8 @@ class _HomeState extends State<Home> {
                   fetchHelper.fetchImgs().then((value) {
                     setState(() {
                       images = value;
+                      er = images[0];
+                      if (images.length > 1) tapped = false;
                     });
                   });
                 },
@@ -60,21 +64,49 @@ class _HomeState extends State<Home> {
                 label: const Text("Search"))
           ],
         ),
-        SizedBox(
-          height: 500,
-          child: ListView.builder(
-            scrollDirection: Axis.vertical,
-            padding: const EdgeInsets.all(8),
-            //shrinkWrap: true,
-            itemCount: images.length,
-            itemBuilder: (BuildContext context, int index) {
-              return Container(
-                //constraints: BoxConstraints.loose(Size(100, 100)),
-                child: Image.network(images[index]),
-              );
-            },
-          ),
-        )
+        if (images.length == 1)
+          Container(
+            padding: EdgeInsets.all(8),
+            height: 500,
+            alignment: Alignment.center,
+            //color: const Color.fromRGBO(171, 125, 231, 0.726),
+            child: Column(
+              children: [
+                const Text(
+                  'Something has gone wrong\n\tPlease try again later',
+                  style: TextStyle(
+                    fontSize: 20,
+                  ),
+                ),
+                ElevatedButton.icon(
+                  onPressed: () {
+                    setState(() {
+                      tapped = true;
+                    });
+                  },
+                  icon: const Icon(Icons.report_problem),
+                  label: const Text('Learn more'),
+                ),
+                if (tapped) Text(er),
+              ],
+            ),
+          )
+        else
+          SizedBox(
+            height: 500,
+            child: ListView.builder(
+              scrollDirection: Axis.vertical,
+              padding: const EdgeInsets.all(8),
+              //shrinkWrap: true,
+              itemCount: images.length,
+              itemBuilder: (BuildContext context, int index) {
+                return Container(
+                  constraints: BoxConstraints.loose(Size(100, 100)),
+                  child: Image.network(images[index]),
+                );
+              },
+            ),
+          )
       ],
     );
   }

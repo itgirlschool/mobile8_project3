@@ -8,7 +8,7 @@ class FetchHelper1 {
     String fullUri = "https://$searchUrl?api_key=$api&q=$request&limit=$limit";
     final uri = Uri.parse(fullUri);
 
-    final response = await http.get(uri);
+    /*final response = await http.get(uri);
     if (response.statusCode == 200) {
       final result = jsonDecode(response.body);
 
@@ -19,6 +19,18 @@ class FetchHelper1 {
       return images;
     } else {
       throw Exception('Failed to load data');
+    }*/
+    try {
+      final response = await http.get(uri);
+      final result = jsonDecode(response.body);
+      final images = (result['data'] as List<dynamic>)
+          .map((e) => e['images']['original']['url'] as String)
+          .toList();
+
+      return images;
+    } catch (error) {
+      print(error);
+      return [error.toString()];
     }
   }
 
