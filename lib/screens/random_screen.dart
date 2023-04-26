@@ -11,17 +11,9 @@ class RandomScreen extends StatefulWidget {
 
 class _RandomScreenState extends State<RandomScreen> {
   final FetchHelper fetchHelper = FetchHelper();
-  late final Future<String> image;
   
   List<String> _images = [];
   bool isLoading = false;
-
-  
-  @override
-  void initState() {
-    image = fetchHelper.fetchImage();
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +36,7 @@ class _RandomScreenState extends State<RandomScreen> {
             if (isLoading) { return; }
             isLoading = true;
             try {
-              final image = await fetchHelper.fetchImage();
+              final image = await fetchHelper.fetchRandomImage();
               setState(() {
                 _images.add(image);
               });
