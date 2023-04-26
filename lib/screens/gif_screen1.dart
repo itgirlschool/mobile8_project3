@@ -14,7 +14,7 @@ class _GifScreenState extends State<GifScreen> {
 
   @override
   void initState() {
-    fetchHelper.fetchImages().then((value) {
+    fetchHelper.fetchTrendingImages().then((value) {
       setState(() {
         images = value;
       });

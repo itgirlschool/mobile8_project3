@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mobile8_project3/data/fetch_helper_1.dart';
+import 'package:mobile8_project3/data/fetch_helper.dart';
 
 class SearchScreen extends StatelessWidget {
   const SearchScreen({super.key});
@@ -27,7 +27,7 @@ class _HomeState extends State<Home> {
   String _Text = "";
   String _searchText = "";
   String er = ' ';
-  final FetchHelper1 fetchHelper = FetchHelper1();
+  final FetchHelper fetchHelper = FetchHelper();
   List<String> images = [];
   String doneReqiest = 'smth';
   bool tapped = false;
@@ -51,8 +51,7 @@ class _HomeState extends State<Home> {
             ElevatedButton.icon(
                 onPressed: () {
                   _searchText = _Text;
-                  fetchHelper.ChangeRequest(_searchText);
-                  fetchHelper.fetchImgs().then((value) {
+                  fetchHelper.fetchSearchImages(request: _searchText).then((value) {
                     setState(() {
                       images = value;
                       er = images[0];
