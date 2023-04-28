@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:mobile8_project3/data/fetch_helper.dart';
+import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 
 class GifScreen extends StatefulWidget {
   const GifScreen({Key? key}) : super(key: key);
@@ -16,6 +16,7 @@ Future<void> _handleRefresh() async {
 class _GifScreenState extends State<GifScreen> {
   final FetchHelper fetchHelper = FetchHelper();
   List<String> images = [];
+  bool isLoading = false;
   Future refresh() async {
     setState(() => images.clear());
   }
@@ -38,36 +39,54 @@ class _GifScreenState extends State<GifScreen> {
       ),
       backgroundColor: Colors.blue[200],
       body: Center(
-        child: Container(
-          decoration: BoxDecoration(
-              gradient: LinearGradient(
-            begin: Alignment.topRight,
-            end: Alignment.bottomLeft,
-            stops: [
-              0.1,
-              0.4,
-              0.6,
-              0.9,
-            ],
-            colors: [
-              Colors.blue,
-              Colors.green,
-              Colors.pink,
-              Colors.indigo,
-            ],
-          )),
-          child: LiquidPullToRefresh(
-            onRefresh: _handleRefresh,
-            color: Colors.blue,
-            height: 200,
-            backgroundColor: Colors.pink[300],
-            animSpeedFactor: 2,
-            showChildOpacityTransition: true,
-            child: ListView.builder(
-              itemCount: images.length,
-              itemBuilder: (context, index) {
-                return Image.network(images[index]);
-              },
+        child: ElevatedButton(
+          onPressed: () async {
+            if (isLoading) {
+              return;
+            }
+            isLoading = true;
+            try {
+              final image = await fetchHelper.fetchImages();
+              setState(() {});
+            } catch (e) {
+              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                  content: Text(
+                      "Something has gone wrong\nPlease try again later")));
+            } finally {
+              isLoading = false;
+            }
+          },
+          child: Container(
+            decoration: BoxDecoration(
+                gradient: LinearGradient(
+              begin: Alignment.topRight,
+              end: Alignment.bottomLeft,
+              stops: [
+                0.1,
+                0.4,
+                0.6,
+                0.9,
+              ],
+              colors: [
+                Colors.blue,
+                Colors.green,
+                Colors.pink,
+                Colors.indigo,
+              ],
+            )),
+            child: LiquidPullToRefresh(
+              onRefresh: _handleRefresh,
+              color: Colors.blue,
+              height: 200,
+              backgroundColor: Colors.pink[300],
+              animSpeedFactor: 2,
+              showChildOpacityTransition: true,
+              child: ListView.builder(
+                itemCount: images.length,
+                itemBuilder: (context, index) {
+                  return Image.network(images[index]);
+                },
+              ),
             ),
           ),
         ),
