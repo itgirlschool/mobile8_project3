@@ -37,7 +37,7 @@ class _GifScreenState extends State<GifScreen> {
       appBar: AppBar(
         title: const Text("Swipe to refresh"),
       ),
-      backgroundColor: Colors.blue[200],
+      backgroundColor: Colors.blue[300],
       body: Center(
         child: ElevatedButton(
           onPressed: () async {
