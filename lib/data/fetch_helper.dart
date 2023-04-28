@@ -6,11 +6,11 @@ class FetchHelper {
   Future<String> fetchRandomImage() async {
     const fullUri = "https://$randomBaseUrl?api_key=$apiKey";
     final uri = Uri.parse(fullUri);
-     
+
     final response = await http.get(uri);
     if (response.statusCode == 200) {
       final result = jsonDecode(response.body);
-      
+
       final String? image = result['data']['images']['original']['url'];
       if (image == null) {
         throw Exception('Failed to load data');
@@ -22,7 +22,8 @@ class FetchHelper {
   }
 
   Future<List<String>> fetchTrendingImages() async {
-    const fullUri = "https://$trendingBaseUrl?api_key=$apiKey&limit=$trendingLimit";
+    const fullUri =
+        "https://$trendingBaseUrl?api_key=$apiKey&limit=$trendingLimit";
     final uri = Uri.parse(fullUri);
 
     final response = await http.get(uri);
@@ -40,7 +41,8 @@ class FetchHelper {
   }
 
   Future<List<String>> fetchSearchImages({required String request}) async {
-    String fullUri = "https://$searchBaseUrl?api_key=$apiKey&q=$request&limit=$searchLimit";
+    String fullUri =
+        "https://$searchBaseUrl?api_key=$apiKey&q=$request&limit=$searchLimit";
     final uri = Uri.parse(fullUri);
     try {
       final response = await http.get(uri);
@@ -51,7 +53,6 @@ class FetchHelper {
 
       return images;
     } catch (error) {
-      print(error);
       return [error.toString()];
     }
   }

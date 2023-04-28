@@ -8,7 +8,7 @@ class SearchScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Search"),
+        title: const Text("Search"),
       ),
       body: const Home(),
     );
@@ -23,7 +23,6 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  @override
   String _Text = "";
   String _searchText = "";
   String er = ' ';
@@ -37,6 +36,7 @@ class _HomeState extends State<Home> {
     });
   }
 
+  @override
   Widget build(BuildContext context) {
     return ListView(
       padding: EdgeInsets.all(10),
@@ -51,7 +51,9 @@ class _HomeState extends State<Home> {
             ElevatedButton.icon(
                 onPressed: () {
                   _searchText = _Text;
-                  fetchHelper.fetchSearchImages(request: _searchText).then((value) {
+                  fetchHelper
+                      .fetchSearchImages(request: _searchText)
+                      .then((value) {
                     setState(() {
                       images = value;
                       er = images[0];
@@ -95,14 +97,11 @@ class _HomeState extends State<Home> {
             height: 500,
             child: ListView.builder(
               scrollDirection: Axis.vertical,
-              padding: const EdgeInsets.all(8),
+              //padding: const EdgeInsets.all(8),
               //shrinkWrap: true,
               itemCount: images.length,
               itemBuilder: (BuildContext context, int index) {
-                return Container(
-                  constraints: BoxConstraints.loose(Size(100, 100)),
-                  child: Image.network(images[index]),
-                );
+                return Image.network(images[index]);
               },
             ),
           )
