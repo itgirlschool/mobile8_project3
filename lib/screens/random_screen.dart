@@ -19,9 +19,22 @@ class _RandomScreenState extends State<RandomScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        flexibleSpace: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.centerLeft,
+            end: Alignment.centerRight,
+            colors: <Color>[
+              Colors.pink,
+              Colors.yellow
+            ],
+          ),
+        ),
+      ),
         actions: [_buildSearchButton()],
       ),
-      body: ListView.builder(
+      body: 
+      ListView.builder(
           itemCount: _images.length,
           itemBuilder: (context, index) => Image.network(_images[index]),
         )
@@ -30,7 +43,7 @@ class _RandomScreenState extends State<RandomScreen> {
 
   Widget _buildSearchButton() {
     return Container(
-      padding: const EdgeInsets.fromLTRB(45, 10, 65, 10),
+      padding: const EdgeInsets.fromLTRB(45, 10, 115, 10),
       child: ElevatedButton(
           onPressed: () async {
             if (isLoading) { return; }

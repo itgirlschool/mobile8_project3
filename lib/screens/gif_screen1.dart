@@ -17,6 +17,8 @@ class _GifScreenState extends State<GifScreen> {
   final FetchHelper fetchHelper = FetchHelper();
   List<String> images = [];
   bool isLoading = false;
+  VoidCallback showError = () {};
+
   Future refresh() async {
     setState(() => images.clear());
   }
@@ -27,12 +29,17 @@ class _GifScreenState extends State<GifScreen> {
       setState(() {
         images = value;
       });
-    });
+    }).catchError((e){showError();});
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    showError = () {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Something has gone wrong\nPlease try again later")));
+    };
     return Scaffold(
       appBar: AppBar(
         title: const Text("Swipe to refresh"),
@@ -46,7 +53,7 @@ class _GifScreenState extends State<GifScreen> {
             }
             isLoading = true;
             try {
-              final image = await fetchHelper.fetchImages();
+              final image = await fetchHelper.fetchTrendingImages();
               setState(() {});
             } catch (e) {
               ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
