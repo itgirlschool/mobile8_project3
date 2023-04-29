@@ -38,74 +38,84 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      padding: EdgeInsets.all(10),
-      children: [
-        Row(
-          children: [
-            Expanded(
-              child: TextField(
-                onChanged: _ChangeText,
-              ),
-            ),
-            ElevatedButton.icon(
-                onPressed: () {
-                  _searchText = _Text;
-                  fetchHelper
-                      .fetchSearchImages(request: _searchText)
-                      .then((value) {
-                    setState(() {
-                      images = value;
-                      er = images[0];
-                      if (images.length > 1) tapped = false;
-                    });
-                  });
-                },
-                icon: const Icon(Icons.search),
-                label: const Text("Search"))
-          ],
+    return Container(
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: FractionalOffset.bottomCenter,
+          colors: [Colors.blue, Colors.purple],
+          stops: [0, 1],
         ),
-        if (images.length == 1)
-          Container(
-            padding: EdgeInsets.all(8),
-            height: 500,
-            alignment: Alignment.center,
-            //color: const Color.fromRGBO(171, 125, 231, 0.726),
-            child: Column(
-              children: [
-                const Text(
-                  'Something has gone wrong\n\tPlease try again later',
-                  style: TextStyle(
-                    fontSize: 20,
-                  ),
+      ),
+      child: ListView(
+        padding: EdgeInsets.all(10),
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: TextField(
+                  onChanged: _ChangeText,
                 ),
-                ElevatedButton.icon(
+              ),
+              ElevatedButton.icon(
                   onPressed: () {
-                    setState(() {
-                      tapped = true;
+                    _searchText = _Text;
+                    fetchHelper
+                        .fetchSearchImages(request: _searchText)
+                        .then((value) {
+                      setState(() {
+                        images = value;
+                        er = images[0];
+                        if (images.length > 1) tapped = false;
+                      });
                     });
                   },
-                  icon: const Icon(Icons.report_problem),
-                  label: const Text('Learn more'),
-                ),
-                if (tapped) Text(er),
-              ],
-            ),
-          )
-        else
-          SizedBox(
-            height: 500,
-            child: ListView.builder(
-              scrollDirection: Axis.vertical,
-              //padding: const EdgeInsets.all(8),
-              //shrinkWrap: true,
-              itemCount: images.length,
-              itemBuilder: (BuildContext context, int index) {
-                return Image.network(images[index]);
-              },
-            ),
-          )
-      ],
+                  icon: const Icon(Icons.search),
+                  label: const Text("Search"))
+            ],
+          ),
+          if (images.length == 1)
+            Container(
+              padding: EdgeInsets.all(8),
+              height: 500,
+              alignment: Alignment.center,
+              //color: const Color.fromRGBO(171, 125, 231, 0.726),
+              child: Column(
+                children: [
+                  const Text(
+                    'Something has gone wrong\n\tPlease try again later',
+                    style: TextStyle(
+                      fontSize: 20,
+                    ),
+                  ),
+                  ElevatedButton.icon(
+                    onPressed: () {
+                      setState(() {
+                        tapped = true;
+                      });
+                    },
+                    icon: const Icon(Icons.report_problem),
+                    label: const Text('Learn more'),
+                  ),
+                  if (tapped) Text(er),
+                ],
+              ),
+            )
+          else
+            SizedBox(
+              height: 500,
+              child: ListView.builder(
+                scrollDirection: Axis.vertical,
+                //padding: const EdgeInsets.all(8),
+                //shrinkWrap: true,
+                itemCount: images.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return Image.network(images[index]);
+                },
+              ),
+            )
+        ],
+      ),
     );
   }
 }
