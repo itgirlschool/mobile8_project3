@@ -19,25 +19,23 @@ class _RandomScreenState extends State<RandomScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        flexibleSpace: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.centerLeft,
-            end: Alignment.centerRight,
-            colors: <Color>[
-              Colors.pink,
-              Colors.yellow
-            ],
-          ),
-        ),
-      ),
         actions: [_buildSearchButton()],
       ),
-      body: 
-      ListView.builder(
-          itemCount: _images.length,
-          itemBuilder: (context, index) => Image.network(_images[index]),
-        )
+      body:  
+      Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: FractionalOffset.bottomCenter,
+            colors: [Colors.blue, Colors.purple],
+            stops: [0, 1],
+          ),
+        ),
+        child: ListView.builder(
+            itemCount: _images.length,
+            itemBuilder: (context, index) => Image.network(_images[index]),
+          ),
+      )
     );
   }
 
