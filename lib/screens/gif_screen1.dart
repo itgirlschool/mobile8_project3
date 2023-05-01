@@ -9,9 +9,6 @@ class GifScreen extends StatefulWidget {
   State<GifScreen> createState() => _GifScreenState();
 }
 
-Future<void> _handleRefresh() async {
-  return await Future.delayed(Duration(seconds: 2));
-}
 
 class _GifScreenState extends State<GifScreen> {
   final FetchHelper fetchHelper = FetchHelper();
@@ -19,17 +16,17 @@ class _GifScreenState extends State<GifScreen> {
   bool isLoading = false;
   VoidCallback showError = () {};
 
-  Future refresh() async {
-    setState(() => images.clear());
-  }
-
-  @override
-  void initState() {
+  Future<void> refresh() async {
     fetchHelper.fetchTrendingImages().then((value) {
       setState(() {
         images = value;
       });
     }).catchError((e){showError();});
+  }
+
+  @override
+  void initState() {
+    refresh();
     super.initState();
   }
 
@@ -46,54 +43,27 @@ class _GifScreenState extends State<GifScreen> {
       ),
       backgroundColor: Colors.blue[300],
       body: Center(
-        child: ElevatedButton(
-          onPressed: () async {
-            if (isLoading) {
-              return;
-            }
-            isLoading = true;
-            try {
-              final image = await fetchHelper.fetchTrendingImages();
-              setState(() {});
-            } catch (e) {
-              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                  content: Text(
-                      "Something has gone wrong\nPlease try again later")));
-            } finally {
-              isLoading = false;
-            }
-          },
-          child: Container(
-            decoration: BoxDecoration(
-                gradient: LinearGradient(
-              begin: Alignment.topRight,
-              end: Alignment.bottomLeft,
-              stops: [
-                0.1,
-                0.4,
-                0.6,
-                0.9,
-              ],
-              colors: [
-                Colors.blue,
-                Colors.green,
-                Colors.pink,
-                Colors.indigo,
-              ],
-            )),
-            child: LiquidPullToRefresh(
-              onRefresh: _handleRefresh,
-              color: Colors.blue,
-              height: 200,
-              backgroundColor: Colors.pink[300],
-              animSpeedFactor: 2,
-              showChildOpacityTransition: true,
-              child: ListView.builder(
-                itemCount: images.length,
-                itemBuilder: (context, index) {
-                  return Image.network(images[index]);
-                },
-              ),
+        child: Container(
+          decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: FractionalOffset.bottomCenter,
+            colors: [Colors.blue, Colors.purple],
+            stops: [0, 1],
+          ),
+        ),
+          child: LiquidPullToRefresh(
+            onRefresh: refresh,
+            color: Colors.blue,
+            height: 200,
+            backgroundColor: Colors.purple[300],
+            animSpeedFactor: 2,
+            showChildOpacityTransition: true,
+            child: ListView.builder(
+              itemCount: images.length,
+              itemBuilder: (context, index) {
+                return Image.network(images[index]);
+              },
             ),
           ),
         ),
